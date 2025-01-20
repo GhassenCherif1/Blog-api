@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI , Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Blog API", version="1.0", description="A simple blog API")
