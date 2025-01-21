@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine , text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker , Session
-from .routers import posts
+from .routers import posts , users , auth
 from . import models
 from .database import engine
 
@@ -18,6 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(posts.router)
+app.include_router(users.router)
+app.include_router(auth.router)
 @app.get("/")
 def read_root():
     return {"message":"Hello World"}
