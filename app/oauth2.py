@@ -34,13 +34,15 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)],db: Ses
     try:
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        id: str = payload.get("user_id")
+        if id is None:
+            print("username is None")
             raise credentials_exception
-        token_data = schemas.TokenData(uesrname=username)
-    except InvalidTokenError:
+        token_data = schemas.TokenData(id=id)
+    except InvalidTokenError as e:
+        print(f"Exception: {str(e)}")  # Log the error
         raise credentials_exception
-    user = db.query(models.User).filter(models.User.email == token_data.username).first()
+    user = db.query(models.User).filter(models.User.id == token_data.id).first()
     if user is None:
         raise credentials_exception
     return user
